@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% load static %}{# 静的ファイルを使うため、static タグを読み込む（後で説明） #}
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>チャットアプリ</title>
+        <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
+        {% block extra_style %}{% endblock %}{# 追加 CSS 用ブロック #}
+    </head>
+    <body>
+        {% block header %}{% endblock %}{# ヘッダー用ブロック #}
+        {% block content %}{% endblock %}{# 各ページのメイン要素用ブロック #}
+        {% block footer %}{% endblock %}{# フッター用ブロック #}
+        {% block extra_js %}{% endblock %}{# 追加 JavaScript 用ブロック #}
+    </body>
+</html>
