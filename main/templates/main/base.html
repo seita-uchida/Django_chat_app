@@ -9,7 +9,13 @@
         {% block extra_style %}{% endblock %}{# 追加 CSS 用ブロック #}
     </head>
     <body>
-        {% block header %}{% endblock %}{# ヘッダー用ブロック #}
+        {% block header %}
+        <header class="header">
+            <div class="header__title">
+                {% block header_title %}{% endblock %}
+            </div>
+        </header>
+        {% endblock %}{# ヘッダー用ブロック #}
         {% block content %}{% endblock %}{# 各ページのメイン要素用ブロック #}
         {% block footer %}{% endblock %}{# フッター用ブロック #}
         {% block extra_js %}{% endblock %}{# 追加 JavaScript 用ブロック #}

@@ -121,3 +121,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ファイルの末尾に以下を追加
+AUTH_USER_MODEL = "main.user"  # User のモデルがどれかを指定する
