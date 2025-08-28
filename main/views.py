@@ -1,7 +1,8 @@
 from django.contrib import auth  # 追加
+from django.contrib.auth import views as auth_views
 from django.shortcuts import redirect, render  # redirect を追加
 
-from .forms import SignUpForm  # 追加
+from .forms import LoginForm, SignUpForm 
 
 def index(request):
     return render(request, "main/index.html")
@@ -46,5 +47,9 @@ def signup(request):
     return render(request, "main/signup.html", context)
 
 
-def login(request):
-    return render(request, "main/login.html")
+class LoginView(auth_views.LoginView):
+    authentication_form = LoginForm  # ログイン用のフォームを指定
+    template_name = "main/login.html"  # テンプレートを指定
+
+def friends(request):
+    return render(request, "main/friends.html")
