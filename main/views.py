@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render  # redirect を追加
 
-from .forms import LoginForm, SignUpForm 
+from .forms import LoginForm, SignUpForm, TalkForm 
 from .models import Talk, User
 
 def index(request):
@@ -77,7 +77,23 @@ def talk_room(request, user_id):
         | Q(sender=friend, receiver=request.user)
     ).order_by("time")
 
+    if request.method == "GET":
+        form = TalkForm()
+    elif request.method == "POST":
+        # 送信内容を取得
+        form = TalkForm(request.POST)
+        if form.is_valid():
+            # トークを仮作成
+            new_talk = form.save(commit=False)
+            # 送信者、受信者、メッセージを与えて保存
+            new_talk.sender = request.user
+            new_talk.receiver = friend
+            new_talk.save()
+            return redirect("talk_room", user_id)
+
+
     context = {
+        "form": form, 
         "friend": friend,
         "talks": talks,
     }

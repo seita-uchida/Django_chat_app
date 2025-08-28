@@ -7,11 +7,15 @@
 
 {% block header_title %}{{ friend.username }}{% endblock %}
 
+{# 新たなテンプレートタグを追加 #}
+{% block talk_room %}
+<a href="{% url 'friends' %}" class="back-button"><i class="fas fa-angle-left"></i></a>
+<a href="" class="reload-button">更新</a>
+{% endblock %}
+
 {% block content %}
 <div class="talk-room">
-    {# 過去のチャットの表示部分 #}
     <ul class="chatboard">
-        {# チャットを古い順に for 文で表示します #}
         {% for talk in talks %}
         <li class="chatboard__item">
             <p class="chatboard__username">
@@ -19,12 +23,20 @@
             </p>
             <p class="chatboard__message">{{ talk.message }}</p>
             <p class="chatboard__time">
-                {{ talk.time|date:"m/d" }}<br>
+                {{ talk.time|date:"m/d" }}</br>
                 {{ talk.time|date:"H:i" }}
             </p>
         </li>
         {% endfor %}
     </ul>
+
+    {# 以下を追加 #}
+    {# チャットの送信フォーム #}
+    <form action="{% url 'talk_room' friend.id %}" method="POST" class="message-form">
+        {% csrf_token %}
+        {{ form.message }}
+        <button type="submit" class="message-form__submit">送信</button>
+    </form>
 </div>
 {% endblock %}
 
