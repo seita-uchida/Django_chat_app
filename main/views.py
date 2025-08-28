@@ -1,10 +1,11 @@
 from django.contrib import auth  # 追加
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render  # redirect を追加
+from django.db.models import Q
+from django.shortcuts import get_object_or_404, redirect, render  # redirect を追加
 
 from .forms import LoginForm, SignUpForm 
-from .models import User
+from .models import Talk, User
 
 def index(request):
     return render(request, "main/index.html")
@@ -63,3 +64,21 @@ def friends(request):
 @login_required
 def settings(request):
     return render(request, "main/settings.html")
+
+@login_required
+def talk_room(request, user_id):
+    # get_object_or_404 は、第一引数にモデル名、その後任意の数のキーワードを受け取り、
+    # もし合致するデータが存在するならそのデータを、存在しないなら 404 エラーを発生させます。
+    friend = get_object_or_404(User, id=user_id)
+
+    # 自分が送信者で上の friend が受信者であるデータ、または friend が送信者で friend が受信者であるデータをすべて取得します。
+    talks = Talk.objects.filter(
+        Q(sender=request.user, receiver=friend)
+        | Q(sender=friend, receiver=request.user)
+    ).order_by("time")
+
+    context = {
+        "friend": friend,
+        "talks": talks,
+    }
+    return render(request, "main/talk_room.html", context)

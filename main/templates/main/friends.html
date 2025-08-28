@@ -9,11 +9,12 @@
 
 {% block content %}
 <div class="friends">
-    {# 友達のリスト表示部分 #}
     <ul class="friends-list">
         {% for friend in friends %}
         <li class="friends-list__item">
-            <a href="" class="friends-list__link">
+
+            {# aタグ内のリンクを追加 #}
+            <a href="{% url 'talk_room' friend.id %}" class="friends-list__link">
                 <div class="friends-list__username">{{ friend.username }}</div>
             </a>
         </li>
